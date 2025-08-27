@@ -2,7 +2,10 @@
 FROM tiryoh/ros-desktop-vnc:noetic
 
 # Set Environment Variables
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND = noninteractive
+
+# LFS 파일 자동 다운로드 비활성화. commit from chohwan 
+ENV GIT_LFS_SKIP_SMUDGE=1
 
 # Install required packages
 RUN apt-get update && apt-get upgrade -y && \
@@ -24,10 +27,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     git lfs install
 
-# Clone repository and install using requirements.txt
-RUN cd ~/catkin_ws/src && \
-    git clone -b noetic-devel https://github.com/parkjaeil00/ultralytics_ros_jaeil.git && \
-    python3 -m pip install -r ultralytics_ros/requirements.txt
+# Clone repository and install using requirements.txt (with debug)
+RUN set -eux; \
+    cd ~/catkin_ws/src; \
+    git clone -b noetic-devel https://github.com/parkjaeil00/ultralytics_ros_jaeil.git; \
+    ls -al ~/catkin_ws/src/ultralytics_ros_jaeil; \
+    python3 -m pip --version; \
+    python3 -m pip install --no-cache-dir -v -r ~/catkin_ws/src/ultralytics_ros_jaeil/requirements.txt
+
 
 # Build the ROS package
 RUN cd ~/catkin_ws && catkin build
