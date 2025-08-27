@@ -26,7 +26,7 @@ RUN apt-get update && \
 
 # Clone repository and install using requirements.txt
 RUN cd ~/catkin_ws/src && \
-    git clone -b noetic-devel https://github.com/Alpaca-zip/ultralytics_ros.git && \
+    git clone -b noetic-devel https://github.com/parkjaeil00/ultralytics_ros_jaeil.git && \
     python3 -m pip install -r ultralytics_ros/requirements.txt
 
 # Build the ROS package
