@@ -20,7 +20,7 @@ RUN mkdir -p ~/catkin_ws/src && \
 
 # Install Git LFS
 RUN apt-get update && \
-    rm -rf /var/lib/apt/lists/* 
+    rm -rf /var/lib/apt/lists/* && \
 
 # Clone repository and install using requirements.txt
 RUN cd ~/catkin_ws/src && \
