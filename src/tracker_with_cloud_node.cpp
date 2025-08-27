@@ -53,6 +53,8 @@ void TrackerWithCloudNode::syncCallback(const sensor_msgs::CameraInfo::ConstPtr&
   pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_cloud(new pcl::PointCloud<pcl::PointXYZ>);
   downsampled_cloud = downsampleCloudMsg(cloud_msg);
 
+
+  cam_model_.fromCameraInfo(camera_info_msg);
   pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud;
   transformed_cloud = cloud2TransformedCloud(downsampled_cloud, cloud_msg->header.frame_id, cam_model_.tfFrame(),
                                              cloud_msg->header.stamp);
@@ -60,7 +62,6 @@ void TrackerWithCloudNode::syncCallback(const sensor_msgs::CameraInfo::ConstPtr&
   sensor_msgs::PointCloud2 detection_cloud_msg;
   visualization_msgs::MarkerArray marker_array_msg;
 
-  cam_model_.fromCameraInfo(camera_info_msg);
   projectCloud(transformed_cloud, yolo_result_msg, cloud_msg->header, detections3d_msg, detection_cloud_msg);
   marker_array_msg = createMarkerArray(detections3d_msg, callback_interval.toSec());
 
